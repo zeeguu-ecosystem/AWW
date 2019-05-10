@@ -15,6 +15,9 @@ assumes gmail since it's easier than setting up a local mail server
 
 # Running With Crontab
 
-To run from crontab use something like: 
+To run from crontab use the env command which allows the 
+passing of the defined environment variables to the 
+command passed as argument:
 
-    * * * * * env WATCHDOG_EMAIL="" WATCHDOG_PASS="" THE_WOLF_EMAIL="" /usr/local/bin/python3.6 $HOME/zee/watchdog/email_if_down.py >> $HOME/.watchdog_log 2>&1
+    * * * * * env WATCHDOG_EMAIL="..." WATCHDOG_PASS="..." THE_WOLF_EMAIL="..." 
+                  /usr/local/bin/python3.6 $HOME/aww/email_if_down.py >> $HOME/.aww_log 2>&1
