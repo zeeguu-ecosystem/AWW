@@ -1,6 +1,3 @@
-# to run from crontab use something like: 
-# * * * * * env WATCHDOG_EMAIL="" WATCHDOG_PASS="" THE_WOLF_EMAIL="" /usr/local/bin/python3.6 $HOME/zee/watchdog/email_if_down.py >> $HOME/.zeeguu_watchdog 2>&1
-
 import requests
 
 import smtplib
@@ -8,7 +5,8 @@ from getpass import getpass
 from email.mime.text import MIMEText
 import os
 
-ENDPOINT_TO_TEST="https://zeeguu.org/"
+URL_TO_TEST="https://zeeguu.org/"
+TOO_SLOW_THRESHOLD=1 # in seconds
 
 def notify_by_email(title, content):
 
@@ -44,13 +42,13 @@ def send_email(user, pwd, recipient, subject, body):
 
 
 try:
-	response = requests.post(ENDPOINT_TO_TEST)
+	response = requests.post(URL_TO_TEST)
 	elapsed_time = response.elapsed.total_seconds()
 	print(elapsed_time)
-	if ( elapsed_time > 1 ):
+	if ( elapsed_time > TOO_SLOW_THRESHOLD ):
 		notify_by_email("API STATUS: slow",
-			f"{ENDPOINT_TO_TEST} took: {elapsed_time} seconds")
+			f"{URL_TO_TEST} took: {elapsed_time} seconds")
 
 except Exception as e: 
-	notify_by_email("API STATUS: offline?", f"{ENDPOINT_TO_TEST} could not be reached. Exception: " + str(e))
+	notify_by_email("API STATUS: offline?", f"{URL_TO_TEST} could not be reached. Exception: " + str(e))
 
